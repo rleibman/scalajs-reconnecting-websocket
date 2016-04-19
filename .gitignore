@@ -1,8 +1,11 @@
 *.class
 *.log
+<<<<<<< HEAD
 *.sjsir
 *.js
 *.map
+=======
+>>>>>>> 21bcf25b8e58d5732fc2145e6d789363eb363383
 
 # sbt specific
 .cache
@@ -14,15 +17,21 @@ lib_managed/
 src_managed/
 project/boot/
 project/plugins/project/
+<<<<<<< HEAD
 front_end/bin/*
 front_end/js/*
 front_end/bin
 front_end/js
+=======
+>>>>>>> 21bcf25b8e58d5732fc2145e6d789363eb363383
 
 # Scala-IDE specific
 .scala_dependencies
 .worksheet
+<<<<<<< HEAD
 .project
 .settings
 .cache-main
 .classpath
+=======
+>>>>>>> 21bcf25b8e58d5732fc2145e6d789363eb363383

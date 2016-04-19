@@ -15,4 +15,3 @@ Super simple, just instantiate in your app an instance of the ReconnectingWebsoc
       	refresh.runNow()
   })
 ```
-
