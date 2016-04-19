@@ -23,6 +23,10 @@ sonatypeSettings
 
 publishMavenStyle := true
 
+homepage := Some(url("https://github.com/rleibman/scalajs-reconnecting-websocket"))
+
+licenses <<= version(v => Seq("MIT" -> url("  https://github.com/softprops/semverfi/blob/%s/LICENSE" format v)))
+
 scmInfo := Some(ScmInfo(
     url("https://github.com/rleibman/scalajs-reconnecting-websocket"),
     "scm:git:git@github.com/rleibman/scalajs-reconnecting-websocket.git",
