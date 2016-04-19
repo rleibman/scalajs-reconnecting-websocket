@@ -2,6 +2,13 @@
 
 Utilities for interacting with websockets in scalajs 
 
+install
+--------
+
+Add the following to your sbt build definition
+
+	libraryDependencies += "net.leibman" %%% "reconnecting-websocket" % "1.0.1"
+
 Usage:
 
 Super simple, just instantiate in your app an instance of the ReconnectingWebsocket:
