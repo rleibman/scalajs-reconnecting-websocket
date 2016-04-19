@@ -13,7 +13,6 @@ object BinaryType extends Enumeration {
 import BinaryType._
 import scala.scalajs.js.typedarray.ArrayBuffer
 import scala.scalajs.js.annotation.ScalaJSDefined
-import scala.concurrent.forkjoin.ThreadLocalRandom
 
 case object ConnectingEvent
 
@@ -40,28 +39,30 @@ case object ConnectingEvent
  *
  * @param protocol - Optional string or array of protocols.
  *
- * @param debug - Whether this instance should log debug messages. Accepts true or false. Default: false.
+ * @param debug - Whether this instance should log debug messages. Default: false.
  *
  * @param automaticOpen - Whether or not the websocket should attempt to connect immediately upon instantiation. The socket can be manually opened or closed at any time using ws.open() and ws.close().
  *
- * @param reconnectInterval The number of milliseconds to delay before attempting to reconnect. Accepts integer. Default: 1000.
+ * @param reconnectInterval The number of milliseconds to delay before attempting to reconnect. Default: 1000.
  *
- * @param maxReconnectInterval The maximum number of milliseconds to delay a reconnection attempt. Accepts integer. Default: 30000.
+ * @param maxReconnectInterval The maximum number of milliseconds to delay a reconnection attempt. Default: 60000.
  *
- * @param reconnectDecay The rate of increase of the reconnect delay. Allows reconnect attempts to back off when problems persist. Accepts integer or float. Default: 1.5.
+ * @param minReconnectInterval The minimum number of milliseconds to delay a reconnection attempt. Default: 200.
  *
- * @param timeoutInterval The maximum time in milliseconds to wait for a connection to succeed before closing and retrying. Accepts integer. Default: 2000.
+ * @param reconnectDecay The rate of increase of the reconnect delay. Allows reconnect attempts to back off when problems persist. Default: 1.5.
+ *
+ * @param timeoutInterval The maximum time in milliseconds to wait for a connection to succeed before closing and retrying. Default: 2000.
  *
  */
-
 class ReconnectingWebsocket(url: String,
     protocol: Option[String] = None,
     debug: Boolean = false,
     automaticOpen: Boolean = true,
     reconnectInterval: Int = 1000,
-    maxReconnectInterval: Int = 30000,
+    maxReconnectInterval: Long = 60000,
     reconnectDecay: Double = 1.5,
-    timeoutInterval: Int = 2000,
+    timeoutInterval: Long = 2000,
+    minReconnectInterval: Long = 200,
     maxReconnectAttempts: Option[Int] = None,
     binaryType: BinaryType = blob,
     onOpen: Event ⇒ Unit = { event ⇒ },
@@ -133,10 +134,13 @@ class ReconnectingWebsocket(url: String,
           import Math._
           //Per the RFC, wait a random time before retrying to connect
           //This algorithm for figuring out the reconnect time is called "binary exponential backoff"
-          val timeoutInterval = min(maxReconnectInterval,
-            200 + (reconnectInterval * random() * pow(reconnectDecay, reconnectAttempt)))
+          val apow = pow(reconnectDecay, reconnectAttempt)
+          val minlong = min(Long.MaxValue, apow)
+          val rand = random() * minlong
+          val interval = minReconnectInterval + (reconnectInterval * rand)
+          val timeoutInterval = min(maxReconnectInterval, interval)
           if (debug) {
-            println(s"ReconnectingWebsocket: attempting reconnect in ${timeoutInterval} ms")
+            println(s"ReconnectingWebsocket: attempting reconnect #${reconnectAttempt}  in ${timeoutInterval} ms")
           }
           setTimeout(timeoutInterval) {
             reconnectAttempt = reconnectAttempt + 1
