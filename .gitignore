@@ -1,0 +1,28 @@
+*.class
+*.log
+*.sjsir
+*.js
+*.map
+
+# sbt specific
+.cache
+.history
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+front_end/bin/*
+front_end/js/*
+front_end/bin
+front_end/js
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+.project
+.settings
+.cache-main
+.classpath
