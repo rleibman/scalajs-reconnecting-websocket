@@ -7,7 +7,7 @@ install
 
 Add the following to your sbt build definition
 
-	libraryDependencies += "net.leibman" %%% "reconnecting-websocket" % "1.0.1"
+	libraryDependencies += "net.leibman" %%% "reconnecting-websocket" % "1.2.0"
 
 Usage:
 
