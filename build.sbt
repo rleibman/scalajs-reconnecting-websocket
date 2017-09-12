@@ -11,35 +11,30 @@ libraryDependencies += "org.scala-js" % "scalajs-dom_sjs0.6_2.12" % "0.9.3"
 
 enablePlugins(ScalaJSPlugin)
 
-
 scalaJSStage in Global := FastOptStage
 
-persistLauncher in Compile := true
+scalaJSUseMainModuleInitializer in Compile := true
 
 artifactPath in (Compile, fastOptJS) := ((crossTarget in (Compile, fastOptJS)).value /
   ((moduleName in fastOptJS).value + "-opt.js"))
-
-import SonatypeKeys._
-
-sonatypeSettings
 
 publishMavenStyle := true
 
 homepage := Some(url("https://github.com/rleibman/scalajs-reconnecting-websocket"))
 
-licenses <<= version(v => Seq("MIT" -> url("https://github.com/rleibman/scalajs-reconnecting-websocket/blob/%s/LICENSE" format v)))
+licenses := Seq("MIT" -> url("https://github.com/rleibman/scalajs-reconnecting-websocket/blob/master/LICENSE"))
+
 scmInfo := Some(ScmInfo(
     url("https://github.com/rleibman/scalajs-reconnecting-websocket"),
     "scm:git:git@github.com/rleibman/scalajs-reconnecting-websocket.git",
     Some("scm:git:git@github.com/rleibman/scalajs-reconnecting-websocket.git")))
 
-publishTo := {
-  val nexus = "https://oss.sonatype.org/"
+publishTo := Some(
   if (isSnapshot.value)
-    Some("snapshots" at nexus + "content/repositories/snapshots")
+    Opts.resolver.sonatypeSnapshots
   else
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
-}
+    Opts.resolver.sonatypeStaging
+)
 
 pomExtra := (
   <developers>
