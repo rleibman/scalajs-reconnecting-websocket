@@ -54,22 +54,23 @@ case object ConnectingEvent
  * @param timeoutInterval The maximum time in milliseconds to wait for a connection to succeed before closing and retrying. Default: 2000.
  *
  */
-class ReconnectingWebsocket(url: String,
-    protocol: Option[String] = None,
-    debug: Boolean = false,
-    automaticOpen: Boolean = true,
-    reconnectInterval: Int = 1000,
-    maxReconnectInterval: Long = 60000,
-    reconnectDecay: Double = 1.5,
-    timeoutInterval: Long = 2000,
-    minReconnectInterval: Long = 200,
-    maxReconnectAttempts: Option[Int] = None,
-    binaryType: BinaryType = blob,
-    onOpen: Event ⇒ Unit = { event ⇒ },
-    onClose: CloseEvent ⇒ Unit = { event ⇒ },
-    onMessage: MessageEvent ⇒ Unit = { event ⇒ },
-    onConnecting: () ⇒ Unit = { () ⇒ },
-    onError: ErrorEvent ⇒ Unit = { event ⇒ }) {
+class ReconnectingWebsocket(
+  url: String,
+  protocol: Option[String] = None,
+  debug: Boolean = false,
+  automaticOpen: Boolean = true,
+  reconnectInterval: Int = 1000,
+  maxReconnectInterval: Long = 60000,
+  reconnectDecay: Double = 1.5,
+  timeoutInterval: Long = 2000,
+  minReconnectInterval: Long = 200,
+  maxReconnectAttempts: Option[Int] = None,
+  binaryType: BinaryType = blob,
+  onOpen: Event ⇒ Unit = { event ⇒ },
+  onClose: CloseEvent ⇒ Unit = { event ⇒ },
+  onMessage: MessageEvent ⇒ Unit = { event ⇒ },
+  onConnecting: () ⇒ Unit = { () ⇒ },
+  onError: ErrorEvent ⇒ Unit = { event ⇒ }) {
 
   /////////////////////////////////////////////////////////////////////////////////
   // I removed some of the vars, but it's not always that simple! It's so much easier
@@ -175,7 +176,9 @@ class ReconnectingWebsocket(url: String,
       case None ⇒
         throw new Error("INVALID STATE: pausing to reconnect websocket")
       case Some(ws) ⇒
-        println(s"ReconnectingWebsocket: send: ${data}")
+        if (debug) {
+          println(s"ReconnectingWebsocket: send: ${data}")
+        }
         ws.send(data)
     }
   }
@@ -189,7 +192,9 @@ class ReconnectingWebsocket(url: String,
       case None ⇒
         throw new Error("INVALID STATE: pausing to reconnect websocket")
       case Some(ws) ⇒
-        println(s"ReconnectingWebsocket: send: ${data}")
+        if (debug) {
+          println(s"ReconnectingWebsocket: send: ${data}")
+        }
         ws.send(data)
     }
   }
@@ -203,7 +208,9 @@ class ReconnectingWebsocket(url: String,
       case None ⇒
         throw new Error("INVALID STATE: pausing to reconnect websocket")
       case Some(ws) ⇒
-        println(s"ReconnectingWebsocket: send: ${data}")
+        if (debug) {
+          println(s"ReconnectingWebsocket: send: ${data}")
+        }
         ws.send(data)
     }
   }
@@ -216,18 +223,26 @@ class ReconnectingWebsocket(url: String,
     forcedClose = true
     ws match {
       case None ⇒
-        println(s"ReconnectingWebsocket: already closed")
+        if (debug) {
+          println(s"ReconnectingWebsocket: already closed")
+        }
       case Some(ws) ⇒
-        println(s"ReconnectingWebsocket: forcing close")
+        if (debug) {
+          println(s"ReconnectingWebsocket: forcing close")
+        }
         ws.close(code, reason)
     }
   }
   def refresh() = {
     ws match {
       case None ⇒
-        println(s"ReconnectingWebsocket: Refresh, but ws == None already")
+        if (debug) {
+          println(s"ReconnectingWebsocket: Refresh, but ws == None already")
+        }
       case Some(ws) ⇒
-        println(s"ReconnectingWebsocket: Additional public API method to refresh the connection if still open (close, re-open). For example, if the app suspects bad data / missed heart beats, it can try to refresh.")
+        if (debug) {
+          println(s"ReconnectingWebsocket: Additional public API method to refresh the connection if still open (close, re-open). For example, if the app suspects bad data / missed heart beats, it can try to refresh.")
+        }
         ws.close()
     }
   }
