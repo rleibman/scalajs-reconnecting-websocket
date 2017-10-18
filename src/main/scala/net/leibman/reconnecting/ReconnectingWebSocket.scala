@@ -55,7 +55,7 @@ case object ConnectingEvent
  *
  */
 class ReconnectingWebsocket(
-  url: String,
+  url: => String,
   protocol: Option[String] = None,
   debug: Boolean = false,
   automaticOpen: Boolean = true,
