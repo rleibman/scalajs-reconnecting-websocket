@@ -5,7 +5,7 @@ organization := "net.leibman"
 
 scalaVersion := "2.12.3"
 
-version := "1.2.0"
+version := "1.2.1"
 
 libraryDependencies += "org.scala-js" % "scalajs-dom_sjs0.6_2.12" % "0.9.3"
 
